@@ -111,15 +111,6 @@ class LANewsExtractor:
         self.browser.wait_until_element_is_visible(xpaths["ELEMENTS_LOCATOR"], timeout=30)
         return self.browser.find_elements(xpaths["ELEMENTS_LOCATOR"])
 
-    def get_last_page(self) -> int:
-        """
-        Retrieves the number of the last page of search results.
-        :return: returns total pages for the news
-        """
-        page_text = self.browser.get_text(xpaths["LAST_PAGE_LOCATOR"])
-        last_page = page_text.split(" of ")[-1]
-        return int(last_page.replace(',', ''))
-
     def extract_news_from_elements(self, elements: List[WebElement]) -> None:
         """
         Extracts news data from a list of web elements.
