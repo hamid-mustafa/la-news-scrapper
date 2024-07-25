@@ -2,8 +2,7 @@ from dataclasses import fields
 from typing import List, Optional
 
 from RPA.Excel.Files import Files
-from selenium.common import NoSuchElementException, TimeoutException, NoSuchFrameException, \
-    StaleElementReferenceException
+from selenium.common import NoSuchElementException, TimeoutException, NoSuchFrameException
 from selenium.webdriver.common.keys import Keys
 from RPA.Browser.Selenium import Selenium, By
 from selenium.webdriver.remote.webelement import WebElement
@@ -27,14 +26,13 @@ class LANewsExtractor:
         stop_period (int): The period (in days) at which the extraction process will stop.
     """
 
-    def __init__(self, search_string: str, stop_period: int):
-        self.browser = Selenium()
-        self.stop_extracting = False
-        self.search_string = search_string
-        self.stop_period = stop_period
-        self.records = []
-        self.excel_file = Files()
-        super().__init__()
+    def __init__(self, search_string: str, stop_period: int) -> None:
+        self.browser: Selenium = Selenium()
+        self.stop_extracting: bool = False
+        self.search_string: str = search_string
+        self.stop_period: int = stop_period
+        self.records: List = []
+        self.excel_file: Files = Files()
 
     def open_browser_and_search_news(self) -> None:
         """
@@ -43,15 +41,20 @@ class LANewsExtractor:
         try:
             self.browser.open_available_browser(BASE_URL)
             logger.info("Browser opened")
+
             self.browser.wait_until_element_is_visible(xpaths["SEARCH_BUTTON_LOCATOR"])
             self.browser.click_button_when_visible(xpaths["SEARCH_BUTTON_LOCATOR"])
             logger.info("Search button clicked")
+
             self.browser.wait_until_element_is_visible(
-                xpaths["SEARCH_FIELD_LOCATOR"], timeout=30)
+                xpaths["SEARCH_FIELD_LOCATOR"], timeout=30
+            )
             logger.info("Search field is visible now")
+
             self.browser.input_text(xpaths["SEARCH_FIELD_LOCATOR"], self.search_string)
             self.browser.press_key(xpaths["SEARCH_FIELD_LOCATOR"], Keys.ENTER)
             logger.info("Search string searched")
+
         except (AssertionError, NoSuchElementException, TimeoutException) as e:
             logger.error(f"Unable to open browser and search string due to {e}")
 
@@ -67,8 +70,10 @@ class LANewsExtractor:
             self.browser.click_element(xpaths["SORT_NEWS_LOCATOR"])
             self.browser.click_element(xpaths["CHOOSE_NEWEST_LOCATOR"])
             logger.info("Most recent news selected")
+
             self.browser.wait_until_element_is_visible(xpaths['LOADING_LOCATOR'], timeout=20)
             logger.info("Loading locator found.")
+
         except (AssertionError, NoSuchElementException, TimeoutException) as e:
             logger.error(f"Unable to select category and sort due to {e}")
 

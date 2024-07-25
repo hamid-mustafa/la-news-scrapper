@@ -4,7 +4,6 @@ import shutil
 from typing import Optional
 
 import requests
-from urllib.parse import urlparse, parse_qs
 from datetime import datetime, timedelta
 from dateutil import parser
 from dateutil.relativedelta import relativedelta
