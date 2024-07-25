@@ -1,0 +1,2 @@
+rpaframework==28.6.0
+robocorp==1.4.0
